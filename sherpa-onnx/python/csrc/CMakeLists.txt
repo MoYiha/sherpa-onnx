@@ -27,6 +27,7 @@ set(srcs
   online-model-config.cc
   online-nemo-ctc-model-config.cc
   online-paraformer-model-config.cc
+  online-punctuation.cc
   online-recognizer.cc
   online-stream.cc
   online-transducer-model-config.cc
@@ -55,6 +56,14 @@ if(SHERPA_ONNX_ENABLE_TTS)
     offline-tts-model-config.cc
     offline-tts-vits-model-config.cc
     offline-tts.cc
+  )
+endif()
+
+if(SHERPA_ONNX_ENABLE_SPEAKER_DIARIZATION)
+  list(APPEND srcs
+    fast-clustering.cc
+    offline-speaker-diarization-result.cc
+    offline-speaker-diarization.cc
   )
 endif()
 

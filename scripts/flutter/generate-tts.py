@@ -180,9 +180,9 @@ def get_piper_models() -> List[TtsModel]:
         TtsModel(model_dir="vits-piper-nl_BE-nathalie-x_low"),
         TtsModel(model_dir="vits-piper-nl_BE-rdh-medium"),
         TtsModel(model_dir="vits-piper-nl_BE-rdh-x_low"),
-        TtsModel(model_dir="vits-piper-nl_NL-mls-medium"),
-        TtsModel(model_dir="vits-piper-nl_NL-mls_5809-low"),
-        TtsModel(model_dir="vits-piper-nl_NL-mls_7432-low"),
+        #  TtsModel(model_dir="vits-piper-nl_NL-mls-medium"),
+        #  TtsModel(model_dir="vits-piper-nl_NL-mls_5809-low"),
+        #  TtsModel(model_dir="vits-piper-nl_NL-mls_7432-low"),
         TtsModel(model_dir="vits-piper-no_NO-talesyntese-medium"),
         TtsModel(model_dir="vits-piper-pl_PL-darkman-medium"),
         TtsModel(model_dir="vits-piper-pl_PL-gosia-medium"),
@@ -342,7 +342,6 @@ def get_vits_models() -> List[TtsModel]:
             or "sherpa-onnx-vits-zh-ll" == m.model_dir
             or "melo-tts" in m.model_dir
         ):
-            s = s[:-1]
             m.dict_dir = m.model_dir + "/dict"
         else:
             m.rule_fars = f"{m.model_dir}/rule.far"

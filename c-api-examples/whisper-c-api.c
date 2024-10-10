@@ -1,4 +1,4 @@
-// c-api-examples/offline-stt-c-api.c
+// c-api-examples/whisper-c-api.c
 //
 // Copyright (c)  2024  Xiaomi Corporation
 

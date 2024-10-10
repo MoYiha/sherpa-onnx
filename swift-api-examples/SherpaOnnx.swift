@@ -90,7 +90,9 @@ func sherpaOnnxOnlineModelConfig(
   debug: Int = 0,
   modelType: String = "",
   modelingUnit: String = "cjkchar",
-  bpeVocab: String = ""
+  bpeVocab: String = "",
+  tokensBuf: String = "",
+  tokensBufSize: Int = 0
 ) -> SherpaOnnxOnlineModelConfig {
   return SherpaOnnxOnlineModelConfig(
     transducer: transducer,
@@ -102,7 +104,9 @@ func sherpaOnnxOnlineModelConfig(
     debug: Int32(debug),
     model_type: toCPointer(modelType),
     modeling_unit: toCPointer(modelingUnit),
-    bpe_vocab: toCPointer(bpeVocab)
+    bpe_vocab: toCPointer(bpeVocab),
+    tokens_buf: toCPointer(tokensBuf),
+    tokens_buf_size: Int32(tokensBufSize)
   )
 }
 
@@ -138,7 +142,9 @@ func sherpaOnnxOnlineRecognizerConfig(
   ctcFstDecoderConfig: SherpaOnnxOnlineCtcFstDecoderConfig = sherpaOnnxOnlineCtcFstDecoderConfig(),
   ruleFsts: String = "",
   ruleFars: String = "",
-  blankPenalty: Float = 0.0
+  blankPenalty: Float = 0.0,
+  hotwordsBuf: String = "",
+  hotwordsBufSize: Int = 0
 ) -> SherpaOnnxOnlineRecognizerConfig {
   return SherpaOnnxOnlineRecognizerConfig(
     feat_config: featConfig,
@@ -154,7 +160,9 @@ func sherpaOnnxOnlineRecognizerConfig(
     ctc_fst_decoder_config: ctcFstDecoderConfig,
     rule_fsts: toCPointer(ruleFsts),
     rule_fars: toCPointer(ruleFars),
-    blank_penalty: blankPenalty
+    blank_penalty: blankPenalty,
+    hotwords_buf: toCPointer(hotwordsBuf),
+    hotwords_buf_size: Int32(hotwordsBufSize)
   )
 }
 
@@ -467,6 +475,26 @@ class SherpaOnnxOfflineRecongitionResult {
     }
   }
 
+  // For SenseVoice models, it can be zh, en, ja, yue, ko
+  // where zh is for Chinese
+  // en is for English
+  // ja is for Japanese
+  // yue is for Cantonese
+  // ko is for Korean
+  var lang: String {
+    return String(cString: result.pointee.lang)
+  }
+
+  // for SenseVoice models
+  var emotion: String {
+    return String(cString: result.pointee.emotion)
+  }
+
+  // for SenseVoice models
+  var event: String {
+    return String(cString: result.pointee.event)
+  }
+
   init(result: UnsafePointer<SherpaOnnxOfflineRecognizerResult>!) {
     self.result = result
   }
@@ -522,14 +550,16 @@ func sherpaOnnxSileroVadModelConfig(
   threshold: Float = 0.5,
   minSilenceDuration: Float = 0.25,
   minSpeechDuration: Float = 0.5,
-  windowSize: Int = 512
+  windowSize: Int = 512,
+  maxSpeechDuration: Float = 5.0
 ) -> SherpaOnnxSileroVadModelConfig {
   return SherpaOnnxSileroVadModelConfig(
     model: toCPointer(model),
     threshold: threshold,
     min_silence_duration: minSilenceDuration,
     min_speech_duration: minSpeechDuration,
-    window_size: Int32(windowSize)
+    window_size: Int32(windowSize),
+    max_speech_duration: maxSpeechDuration
   )
 }
 
@@ -936,7 +966,9 @@ func sherpaOnnxKeywordSpotterConfig(
   maxActivePaths: Int = 4,
   numTrailingBlanks: Int = 1,
   keywordsScore: Float = 1.0,
-  keywordsThreshold: Float = 0.25
+  keywordsThreshold: Float = 0.25,
+  keywordsBuf: String = "",
+  keywordsBufSize: Int = 0
 ) -> SherpaOnnxKeywordSpotterConfig {
   return SherpaOnnxKeywordSpotterConfig(
     feat_config: featConfig,
@@ -945,7 +977,9 @@ func sherpaOnnxKeywordSpotterConfig(
     num_trailing_blanks: Int32(numTrailingBlanks),
     keywords_score: keywordsScore,
     keywords_threshold: keywordsThreshold,
-    keywords_file: toCPointer(keywordsFile)
+    keywords_file: toCPointer(keywordsFile),
+    keywords_buf: toCPointer(keywordsBuf),
+    keywords_buf_size: Int32(keywordsBufSize)
   )
 }
 
@@ -1041,6 +1075,124 @@ class SherpaOnnxOfflinePunctuationWrapper {
     let cText = SherpaOfflinePunctuationAddPunct(ptr, toCPointer(text))
     let ans = String(cString: cText!)
     SherpaOfflinePunctuationFreeText(cText)
+    return ans
+  }
+}
+
+func sherpaOnnxOfflineSpeakerSegmentationPyannoteModelConfig(model: String)
+  -> SherpaOnnxOfflineSpeakerSegmentationPyannoteModelConfig
+{
+  return SherpaOnnxOfflineSpeakerSegmentationPyannoteModelConfig(model: toCPointer(model))
+}
+
+func sherpaOnnxOfflineSpeakerSegmentationModelConfig(
+  pyannote: SherpaOnnxOfflineSpeakerSegmentationPyannoteModelConfig,
+  numThreads: Int = 1,
+  debug: Int = 0,
+  provider: String = "cpu"
+) -> SherpaOnnxOfflineSpeakerSegmentationModelConfig {
+  return SherpaOnnxOfflineSpeakerSegmentationModelConfig(
+    pyannote: pyannote,
+    num_threads: Int32(numThreads),
+    debug: Int32(debug),
+    provider: toCPointer(provider)
+  )
+}
+
+func sherpaOnnxFastClusteringConfig(numClusters: Int = -1, threshold: Float = 0.5)
+  -> SherpaOnnxFastClusteringConfig
+{
+  return SherpaOnnxFastClusteringConfig(num_clusters: Int32(numClusters), threshold: threshold)
+}
+
+func sherpaOnnxSpeakerEmbeddingExtractorConfig(
+  model: String,
+  numThreads: Int = 1,
+  debug: Int = 0,
+  provider: String = "cpu"
+) -> SherpaOnnxSpeakerEmbeddingExtractorConfig {
+  return SherpaOnnxSpeakerEmbeddingExtractorConfig(
+    model: toCPointer(model),
+    num_threads: Int32(numThreads),
+    debug: Int32(debug),
+    provider: toCPointer(provider)
+  )
+}
+
+func sherpaOnnxOfflineSpeakerDiarizationConfig(
+  segmentation: SherpaOnnxOfflineSpeakerSegmentationModelConfig,
+  embedding: SherpaOnnxSpeakerEmbeddingExtractorConfig,
+  clustering: SherpaOnnxFastClusteringConfig,
+  minDurationOn: Float = 0.3,
+  minDurationOff: Float = 0.5
+) -> SherpaOnnxOfflineSpeakerDiarizationConfig {
+  return SherpaOnnxOfflineSpeakerDiarizationConfig(
+    segmentation: segmentation,
+    embedding: embedding,
+    clustering: clustering,
+    min_duration_on: minDurationOn,
+    min_duration_off: minDurationOff
+  )
+}
+
+struct SherpaOnnxOfflineSpeakerDiarizationSegmentWrapper {
+  var start: Float = 0
+  var end: Float = 0
+  var speaker: Int = 0
+}
+
+class SherpaOnnxOfflineSpeakerDiarizationWrapper {
+  /// A pointer to the underlying counterpart in C
+  let impl: OpaquePointer!
+
+  init(
+    config: UnsafePointer<SherpaOnnxOfflineSpeakerDiarizationConfig>!
+  ) {
+    impl = SherpaOnnxCreateOfflineSpeakerDiarization(config)
+  }
+
+  deinit {
+    if let impl {
+      SherpaOnnxDestroyOfflineSpeakerDiarization(impl)
+    }
+  }
+
+  var sampleRate: Int {
+    return Int(SherpaOnnxOfflineSpeakerDiarizationGetSampleRate(impl))
+  }
+
+  // only config.clustering is used. All other fields are ignored
+  func setConfig(config: UnsafePointer<SherpaOnnxOfflineSpeakerDiarizationConfig>!) {
+    SherpaOnnxOfflineSpeakerDiarizationSetConfig(impl, config)
+  }
+
+  func process(samples: [Float]) -> [SherpaOnnxOfflineSpeakerDiarizationSegmentWrapper] {
+    let result = SherpaOnnxOfflineSpeakerDiarizationProcess(
+      impl, samples, Int32(samples.count))
+
+    if result == nil {
+      return []
+    }
+
+    let numSegments = Int(SherpaOnnxOfflineSpeakerDiarizationResultGetNumSegments(result))
+
+    let p: UnsafePointer<SherpaOnnxOfflineSpeakerDiarizationSegment>? =
+      SherpaOnnxOfflineSpeakerDiarizationResultSortByStartTime(result)
+
+    if p == nil {
+      return []
+    }
+
+    var ans: [SherpaOnnxOfflineSpeakerDiarizationSegmentWrapper] = []
+    for i in 0..<numSegments {
+      ans.append(
+        SherpaOnnxOfflineSpeakerDiarizationSegmentWrapper(
+          start: p![i].start, end: p![i].end, speaker: Int(p![i].speaker)))
+    }
+
+    SherpaOnnxOfflineSpeakerDiarizationDestroySegment(p)
+    SherpaOnnxOfflineSpeakerDiarizationDestroyResult(result)
+
     return ans
   }
 }

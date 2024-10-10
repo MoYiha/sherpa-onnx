@@ -2,7 +2,6 @@
 
 import argparse
 from dataclasses import dataclass
-from typing import List, Optional
 
 import jinja2
 
@@ -71,7 +70,7 @@ def get_models():
         Model(
             model_name="sherpa-onnx-paraformer-zh-2023-09-14",
             idx=0,
-            lang="zh",
+            lang="zh_en",
             short_name="paraformer",
             rule_fsts="itn_zh_number.fst",
             cmd="""
@@ -109,7 +108,7 @@ def get_models():
         Model(
             model_name="sherpa-onnx-paraformer-zh-small-2024-03-09",
             idx=14,
-            lang="zh",
+            lang="zh_en",
             short_name="small_paraformer",
             rule_fsts="itn_zh_number.fst",
             cmd="""
@@ -291,6 +290,46 @@ def get_models():
             rm -fv encoder-epoch-99-avg-1.onnx
             rm -fv decoder-epoch-99-avg-1.int8.onnx
             rm -fv joiner-epoch-99-avg-1.onnx
+
+            ls -lh
+
+            popd
+            """,
+        ),
+        Model(
+            model_name="sherpa-onnx-zipformer-ru-2024-09-18",
+            idx=17,
+            lang="ru",
+            short_name="zipformer",
+            cmd="""
+            pushd $model_name
+
+            rm -rfv test_wavs
+
+            rm -fv encoder.onnx
+            rm -fv decoder.int8.onnx
+            rm -fv joiner.onnx
+            rm -fv bpe.model
+
+            ls -lh
+
+            popd
+            """,
+        ),
+        Model(
+            model_name="sherpa-onnx-small-zipformer-ru-2024-09-18",
+            idx=18,
+            lang="ru",
+            short_name="small_zipformer",
+            cmd="""
+            pushd $model_name
+
+            rm -rfv test_wavs
+
+            rm -fv encoder.onnx
+            rm -fv decoder.int8.onnx
+            rm -fv joiner.onnx
+            rm -fv bpe.model
 
             ls -lh
 

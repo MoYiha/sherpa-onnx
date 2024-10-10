@@ -234,6 +234,11 @@ final class SherpaOnnxOnlineModelConfig extends Struct {
   external Pointer<Utf8> modelingUnit;
 
   external Pointer<Utf8> bpeVocab;
+
+  external Pointer<Utf8> tokensBuf;
+
+  @Int32()
+  external int tokensBufSize;
 }
 
 final class SherpaOnnxOnlineCtcFstDecoderConfig extends Struct {
@@ -275,6 +280,11 @@ final class SherpaOnnxOnlineRecognizerConfig extends Struct {
 
   @Float()
   external double blankPenalty;
+
+  external Pointer<Utf8> hotwordsBuf;
+
+  @Int32()
+  external int hotwordsBufSize;
 }
 
 final class SherpaOnnxSileroVadModelConfig extends Struct {
@@ -291,6 +301,9 @@ final class SherpaOnnxSileroVadModelConfig extends Struct {
 
   @Int32()
   external int windowSize;
+
+  @Float()
+  external double maxSpeechDuration;
 }
 
 final class SherpaOnnxVadModelConfig extends Struct {
@@ -358,6 +371,11 @@ final class SherpaOnnxKeywordSpotterConfig extends Struct {
   external double keywordsThreshold;
 
   external Pointer<Utf8> keywordsFile;
+
+  external Pointer<Utf8> keywordsBuf;
+
+  @Int32()
+  external int keywordsBufSize;
 }
 
 final class SherpaOnnxOfflinePunctuation extends Opaque {}

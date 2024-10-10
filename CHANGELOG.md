@@ -1,3 +1,71 @@
+## 1.10.27
+
+* Add non-streaming ONNX models for Russian ASR (#1358)
+* Fix building Flutter TTS examples for Linux (#1356)
+* Support passing utf-8 strings from JavaScript to C++. (#1355)
+* Fix sherpa_onnx.go to support returning empty recognition results (#1353)
+
+## 1.10.26
+
+* Add links to projects using sherpa-onnx. (#1345)
+* Support lang/emotion/event results from SenseVoice in Swift API. (#1346)
+* Support specifying max speech duration for VAD. (#1348)
+* Add APIs about max speech duration in VAD for various programming languages (#1349)
+
+## 1.10.25
+
+* Allow tokens and hotwords to be loaded from buffered string driectly (#1339)
+* Fix computing features for CED audio tagging models. (#1341)
+* Preserve previous result as context for next segment (#1335)
+* Add Python binding for online punctuation models (#1312)
+* Fix vad.Flush(). (#1329)
+* Fix wasm app for streaming paraformer (#1328)
+* Build websocket related binaries for embedded systems. (#1327)
+* Fixed the C api calls and created the TTS project file (#1324)
+* Re-implement LM rescore for online transducer (#1231)
+
+## 1.10.24
+
+* Add VAD and keyword spotting for the Node package with WebAssembly (#1286)
+* Fix releasing npm package and fix building Android VAD+ASR example (#1288)
+* add Tokens []string, Timestamps []float32, Lang string, Emotion string, Event string (#1277)
+* add vad+sense voice example for C API (#1291)
+* ADD VAD+ASR example for dart with CircularBuffer. (#1293)
+* Fix VAD+ASR example for Dart API. (#1294)
+* Avoid SherpaOnnxSpeakerEmbeddingManagerFreeBestMatches freeing null. (#1296)
+* Fix releasing wasm app for vad+asr (#1300)
+* remove extra files from linux/macos/windows jni libs (#1301)
+* two-pass Android APK for SenseVoice (#1302)
+* Downgrade flutter sdk versions. (#1305)
+* Reduce onnxruntime log output. (#1306)
+* Provide prebuilt .jar files for different java versions. (#1307)
+
+
+## 1.10.23
+
+* flutter: add lang, emotion, event to OfflineRecognizerResult (#1268)
+* Use a separate thread to initialize models for lazarus examples. (#1270)
+* Object pascal examples for recording and playing audio with portaudio. (#1271)
+* Text to speech API for Object Pascal. (#1273)
+* update kotlin api for better release native object and add user-friendly apis. (#1275)
+* Update wave-reader.cc to support 8/16/32-bit waves (#1278)
+* Add WebAssembly for VAD (#1281)
+* WebAssembly example for VAD + Non-streaming ASR (#1284)
+
+## 1.10.22
+
+* Add Pascal API for reading wave files (#1243)
+* Pascal API for streaming ASR (#1246)
+* Pascal API for non-streaming ASR (#1247)
+* Pascal API for VAD (#1249)
+* Add more C API examples (#1255)
+* Add emotion, event of SenseVoice. (#1257)
+* Support reading multi-channel wave files with 8/16/32-bit encoded samples (#1258)
+* Enable IPO only for Release build. (#1261)
+* Add Lazarus example for generating subtitles using Silero VAD with non-streaming ASR (#1251)
+* Fix looking up OOVs in lexicon.txt for MeloTTS models. (#1266)
+
+
 ## 1.10.21
 
 * Fix ffmpeg c api example (#1185)

@@ -105,6 +105,7 @@ sherpa-onnx-kws-zipformer-wenetspeech-3.3M-2024-01-01
 sherpa-onnx-ced-*
 node_modules
 package-lock.json
+pubspec.lock
 sherpa-onnx-nemo-*
 sherpa-onnx-vits-*
 sherpa-onnx-telespeech-ctc-*
@@ -116,3 +117,7 @@ sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17
 vits-melo-tts-zh_en
 *.o
 *.ppu
+sherpa-onnx-online-punct-en-2024-08-06
+*.mp4
+*.mp3
+sherpa-onnx-pyannote-segmentation-3-0
